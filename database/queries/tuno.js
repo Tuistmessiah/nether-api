@@ -1,5 +1,17 @@
 const pool = require("../databasePool");
 
+const getTunos = () => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM tuno", [], (error, response) => {
+      if (error) {
+        return reject(error);
+      }
+      const tunos = response.rows;
+      return resolve({ tunos });
+    });
+  });
+};
+
 const newTuno = ({ firstName, lastName }) => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -10,7 +22,7 @@ const newTuno = ({ firstName, lastName }) => {
           return reject(error);
         }
         const id = response.rows[0].id;
-        resolve({ id });
+        return resolve({ id });
       }
     );
   });
@@ -22,13 +34,12 @@ const getTuno = (id) => {
       'SELECT * FROM tuno WHERE "id" = $1',
       [id],
       (error, response) => {
-        console.log({ error, response });
         if (error) {
-          reject(error);
+          return reject(error);
         }
         const isExisting = response.rowCount > 0;
         const tuno = response.rows[0];
-        resolve({ tuno, isExisting });
+        return resolve({ tuno, isExisting });
       }
     );
   });
@@ -43,13 +54,12 @@ const updateTuno = (id, { firstName, lastName }) => {
       RETURNING "firstName", "lastName"`,
       [id, firstName, lastName],
       (error, response) => {
-        console.log({ error, response });
         if (error) {
           return reject(error);
         }
-        const { firstName, lastName } = response.rows[0];
+        const object = response.rows[0];
         const isExisting = response.rowCount > 0;
-        resolve({ id, isExisting, firstName, lastName });
+        return resolve({ id, isExisting, object });
       }
     );
   });
@@ -61,11 +71,10 @@ const deleteTuno = (id) => {
       if (error) {
         return reject(error);
       }
-      console.log({ response });
       const isExisting = response.rowCount > 0;
-      resolve({ id, isExisting });
+      return resolve({ id, isExisting });
     });
   });
 };
 
-module.exports = { newTuno, getTuno, deleteTuno, updateTuno };
+module.exports = { getTunos, newTuno, getTuno, deleteTuno, updateTuno };

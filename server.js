@@ -18,31 +18,30 @@ let client = {};
 app.use("/tuno", tunoRouter);
 
 app.use((err, req, res, next) => {
-  console.log("erro: ", err);
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     error: err.message,
   });
 });
 
-console.log(`Running ${process.env.NODE_API_ENV} mode`);
-if (process.env.NODE_API_ENV === "development") {
-  client = new Client({
-    host: "localhost",
-    port: 5432,
-    database: "postgres",
-    user: "postgres",
-    password: "postgres123",
-  });
-} else {
-  client = new Client({
-    host: "localhost",
-    port: 5432,
-    database: "postgres",
-    user: "postgres",
-    password: "postgres123",
-  });
-}
+// console.log(`Running ${process.env.NODE_API_ENV} mode`);
+// if (process.env.NODE_API_ENV === "development") {
+//   client = new Client({
+//     host: "localhost",
+//     port: 5432,
+//     database: "postgres",
+//     user: "postgres",
+//     password: "postgres123",
+//   });
+// } else {
+//   client = new Client({
+//     host: "localhost",
+//     port: 5432,
+//     database: "postgres",
+//     user: "postgres",
+//     password: "postgres123",
+//   });
+// }
 
 // let values = {};
 
@@ -97,5 +96,5 @@ if (process.env.NODE_API_ENV === "development") {
 // });
 
 app.listen(PORT, function () {
-  console.log(`Express server listening on port ${PORT}`);
+  console.info(`Express server listening on port ${PORT}`);
 });
