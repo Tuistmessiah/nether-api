@@ -2,9 +2,10 @@
   "name": "nether-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
+    "configure": "./database/configure_db.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pedro Caetano",
