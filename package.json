@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "configure": "./database/configure_db.sh",
+    "db:reset": "cd database && ./reset_db.sh",
+    "db:populate": "cd database/operations && node ./populate-db.js",
+    "db:populate:custom": "cd database/operations && MOCK=custom node ./populate-db.js",
+    "db:configure:": "npm run db:reset && npm run db:populate",
+    "load:mock": "cd database/operations && node ./load-mock.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pedro Caetano",
@@ -13,8 +17,16 @@
   "dependencies": {
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "pg": "^8.1.0"
+    "find-config": "^1.0.0",
+    "pg": "^8.1.0",
+    "request": "^2.88.2",
+    "shelljs": "^0.8.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.0.0",
+    "prettier": "^2.0.5"
   }
 }

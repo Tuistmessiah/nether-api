@@ -2,10 +2,10 @@ const { Router } = require("express");
 const { acrudEndpoints } = require("./endpoints/acrud");
 const router = new Router();
 
-const ENTITY_NAME = "tuno";
+const ENTITY_NAME = "section";
 
 router.get("/", (req, res) => {
-  return res.json({ message: "Endpoints:", content: tunoEndpoints });
+  return res.json({ message: "Endpoints:", content: sectionEndpoints });
 });
 
 router.get("/all", acrudEndpoints(ENTITY_NAME).all);
@@ -22,38 +22,32 @@ module.exports = router;
 
 // INTERNALS
 
-const tunoEndpoints = {
-  getAllTunos: {
+const sectionEndpoints = {
+  getAllSections: {
     type: "get",
     endpoint: "/all",
-    description: "Retrieve all tunos",
+    description: "Retrieve all sections",
   },
-  postTuno: {
+  postSection: {
     type: "post",
     endpoint: "/new",
-    description: "Create a new tuno",
-    body: {
-      first_name: "example1",
-      last_name: "example2",
-    },
+    description: "Create a new section",
+    body: {},
   },
-  getTuno: {
+  getSection: {
     type: "get",
     endpoint: "/:id",
-    description: "Retrieve a tuno",
+    description: "Retrieve a section",
   },
-  updateTuno: {
+  updateSection: {
     type: "put",
     endpoint: "/update/:id",
-    description: "Update a tuno",
-    body: {
-      first_name: "example1",
-      last_name: "example2",
-    },
+    description: "Update a section",
+    body: {},
   },
-  deleteTuno: {
+  deleteSection: {
     type: "delete",
     endpoint: "/:id",
-    description: "Delete a tuno",
+    description: "Delete a section",
   },
 };
