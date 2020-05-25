@@ -8,9 +8,12 @@ const tunoRouter = require("./api/tuno-router");
 const sectionRouter = require("./api/section-router");
 
 const PORT = process.env.PORT || 5000;
-const TOTAL_NUMBER_REQUESTS_PER_SECOND = 1000; // 1000 requests
+
+const NUMBER_REQUESTS_PER_INTERVAL = 10; // requests
+const TOTAL_NUMBER_REQUESTS_PER_INTERVAL = 1000; // requests
 const INTERVAL_OF_IP_CHECKING = 1000; // 1 second
-const INTERVAL_OF_BLACKLIST = 1000 * 3600; // 1 hour
+const NUMBER_ALLOWED_OVERFLOWS = 10; // req overflow attempts
+const INTERVAL_OF_BLACKLIST = 1000 * 60 * 60; // 1 hour
 
 // TODO: security, protect again stupidly big JSONs
 // TODO: improve status codes and messages of errors
@@ -34,31 +37,39 @@ setInterval(() => {
 }, INTERVAL_OF_BLACKLIST);
 
 app.all("*", (req, res, next) => {
-  // Black list IPs / hour
-  if (blackList[req.ip]) {
-    res.status(505).json({
-      error: "Too many requests!",
-    });
-  }
+  totalNumber += 1 || 0;
+  ipChecker[req.ip] += 1 || 0;
 
-  // Limit total req / second
-  if (totalNumber < TOTAL_NUMBER_REQUESTS_PER_SECOND) {
-    res.status(505).json({
-      error: "Too many requests!",
-    });
-  }
-
-  // Register entry
+  // Limit req / ip / second
   if (ipChecker.hasOwnProperty(req.ip)) {
-    if (ipChecker[req.ip] > 10) {
-      blackList[req.ip] = true;
+    if (ipChecker[req.ip] > NUMBER_REQUESTS_PER_INTERVAL) {
+      blackList[req.ip] += 1 || 0;
       res.status(505).json({
         error: "Too many requests!",
       });
+      return;
     }
-    ipChecker[req.ip] = ipChecker[req.ip] + 1;
-  } else {
-    ipChecker[req.ip] = 0;
+  }
+
+  // Limit ALL req / second
+  if (totalNumber > TOTAL_NUMBER_REQUESTS_PER_INTERVAL) {
+    res.status(505).json({
+      error: "Server is overflooded!",
+    });
+    return;
+  }
+
+  // Black list IPs / hour after
+  if (
+    blackList.hasOwnProperty(req.ip) &&
+    blackList[req.ip] > NUMBER_ALLOWED_OVERFLOWS
+  ) {
+    res.status(505).json({
+      error: `This IP has been tagged in the black list for ${Math.ceil(
+        INTERVAL_OF_BLACKLIST / 3600
+      )} hours!`,
+    });
+    return;
   }
 
   next();
