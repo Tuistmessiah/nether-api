@@ -9,6 +9,7 @@ const pool = require("../dbPool");
  * */
 
 // TODO: Make it possible to call these functions like this: acrud('tuno').create(content)
+// TODO: Create a logger middleware
 
 module.exports = {
   allEntity,
@@ -19,8 +20,9 @@ module.exports = {
 };
 
 function allEntity(entityName) {
+  const query = `SELECT * FROM ${entityName}`;
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM ${entityName}`, [], (error, response) => {
+    pool.query(query, [], (error, response) => {
       if (error) {
         return reject(error);
       }
@@ -37,36 +39,30 @@ function createEntity(entityName, content) {
     .fill()
     .map((val, i) => "$" + (i + 1))
     .join();
-
+  const query = `INSERT INTO ${entityName}(${queryCols}) VALUES(${queryValIndexes}) RETURNING id`;
+  console.log(query);
   return new Promise((resolve, reject) => {
-    pool.query(
-      `INSERT INTO ${entityName}(${queryCols}) VALUES(${queryValIndexes}) RETURNING id`,
-      queryValues,
-      (error, response) => {
-        if (error) {
-          return reject(error);
-        }
-        const id = response.rows[0].id;
-        return resolve({ id });
+    pool.query(query, queryValues, (error, response) => {
+      if (error) {
+        return reject(error);
       }
-    );
+      const id = response.rows[0].id;
+      return resolve({ id });
+    });
   });
 }
 
 function readEntity(entityName, id) {
+  const query = `SELECT * FROM ${entityName} WHERE "id" = $1`;
   return new Promise((resolve, reject) => {
-    pool.query(
-      `SELECT * FROM ${entityName} WHERE "id" = $1`,
-      [id],
-      (error, response) => {
-        if (error) {
-          return reject(error);
-        }
-        const isExisting = response.rowCount > 0;
-        const content = { [entityName]: response.rows[0] };
-        return resolve({ id, isExisting, content });
+    pool.query(query, [id], (error, response) => {
+      if (error) {
+        return reject(error);
       }
-    );
+      const isExisting = response.rowCount > 0;
+      const content = { [entityName]: response.rows[0] };
+      return resolve({ id, isExisting, content });
+    });
   });
 }
 
@@ -76,38 +72,29 @@ function updateEntity(entityName, id, content) {
   const queryColSet = Object.keys(content)
     .map((key, i) => key + " = $" + (i + 2))
     .join();
+  const query = `UPDATE ${entityName} SET ${queryColSet} WHERE id = $1 RETURNING ${queryCols}`;
 
   return new Promise((resolve, reject) => {
-    pool.query(
-      `UPDATE ${entityName} 
-      SET ${queryColSet} 
-      WHERE id = $1 
-      RETURNING ${queryCols}`,
-      [id, ...queryValues],
-      (error, response) => {
-        if (error) {
-          return reject(error);
-        }
-        const content = { [entityName]: response.rows[0] };
-        const isExisting = response.rowCount > 0;
-        return resolve({ id, isExisting, content });
+    pool.query(query, [id, ...queryValues], (error, response) => {
+      if (error) {
+        return reject(error);
       }
-    );
+      const content = { [entityName]: response.rows[0] };
+      const isExisting = response.rowCount > 0;
+      return resolve({ id, isExisting, content });
+    });
   });
 }
 
 function deleteEntity(entityName, id) {
+  const query = `DELETE FROM ${entityName} WHERE "id" = $1`;
   return new Promise((resolve, reject) => {
-    pool.query(
-      `DELETE FROM ${entityName} WHERE "id" = $1`,
-      [id],
-      (error, response) => {
-        if (error) {
-          return reject(error);
-        }
-        const isExisting = response.rowCount > 0;
-        return resolve({ id, isExisting });
+    pool.query(query, [id], (error, response) => {
+      if (error) {
+        return reject(error);
       }
-    );
+      const isExisting = response.rowCount > 0;
+      return resolve({ id, isExisting });
+    });
   });
 }

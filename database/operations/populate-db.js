@@ -22,6 +22,10 @@ sounds.forEach((sound) => {
 
 console.info("Populating 'sections'...");
 sectionsIndex.forEach((sectionMeta) => {
-  const section = require(`${path}/sections/${sectionMeta.section_name}.json`);
-  createEntity("section", section);
+  const sectionJSON = require(`${path}/sections/${sectionMeta.section_name}.json`);
+  createEntity("section", {
+    section_name: sectionMeta.section_name,
+    page_ref: sectionMeta.page_ref,
+    config: sectionJSON,
+  });
 });

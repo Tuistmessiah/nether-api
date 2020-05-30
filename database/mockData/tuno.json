@@ -1,32 +1,26 @@
 [
   {
-    "id": 1,
     "first_name": "pedro",
     "last_name": "caetano"
   },
   {
-    "id": 3,
     "first_name": "naila",
     "last_name": "farhana"
   },
   {
-    "id": 4,
-    "first_name": "pedro",
-    "last_name": "caetano"
+    "first_name": "martijn",
+    "last_name": "Pires"
   },
   {
-    "id": 5,
     "first_name": "rafael",
     "last_name": "caetano"
   },
   {
-    "id": 6,
-    "first_name": "naila",
-    "last_name": "farhana"
+    "first_name": "carlos",
+    "last_name": "Assuncao"
   },
   {
-    "id": 2,
-    "first_name": "rafael",
-    "last_name": "caetano"
+    "first_name": "eva",
+    "last_name": "nunes"
   }
 ]
