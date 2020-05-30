@@ -40,7 +40,6 @@ function createEntity(entityName, content) {
     .map((val, i) => "$" + (i + 1))
     .join();
   const query = `INSERT INTO ${entityName}(${queryCols}) VALUES(${queryValIndexes}) RETURNING id`;
-  console.log(query);
   return new Promise((resolve, reject) => {
     pool.query(query, queryValues, (error, response) => {
       if (error) {

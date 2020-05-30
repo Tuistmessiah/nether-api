@@ -24,7 +24,13 @@ const INTERVAL_OF_BLACKLIST = 1000 * 60 * 60; // 1 hour
 // TODO: Make security system with encrypted tokens
 // TODO: Make all security sensitive information coming from the server-auth.json
 
-app.use(cors({ origin: auth["cors-origin"], credentials: true }));
+// CORS
+if (auth["cors-off"]) {
+  app.use(cors());
+} else {
+  app.use(cors({ origin: auth["cors-origin"], credentials: true }));
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
