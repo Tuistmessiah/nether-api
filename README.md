@@ -6,7 +6,7 @@ My own node API for open source projects. It holds my tests on PostgreSQL and se
 
 ## Installation
 
-Install dependencies and add a `databaseConfiguration.json` file in the `database` folder to connect to your local postgres DB. After installing your local postgres database, run `configure_db.sh` (`npm run configure`) to drop any old DB and create a new one (named `postgres`).
+Install dependencies and add a `db-configuration.json` file in the `database` folder to connect to your local postgres DB. After installing your local postgres database, run `configure_db.sh` (`npm run db:configure`) to drop any old DB and create a new one (named `postgres`).
 
 ## Run
 

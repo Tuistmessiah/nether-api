@@ -8,7 +8,7 @@ if (process.env.MOCK === "custom") {
 
 const tunos = require(`${path}/tuno.json`);
 const sounds = require(`${path}/sound.json`);
-// const sectionsIndex = require(`${path}/sectionsIndex.json`);
+const sectionsIndex = require(`${path}/sectionsIndex.json`);
 
 console.info("Populating 'tunos'...");
 tunos.forEach((tuno) => {
