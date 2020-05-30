@@ -14,6 +14,19 @@ Run `npm run start` to run node server in localhost 5000.
 
 # Content
 
+Any content can call this API, although not every endpoint will be available. For extra security, add a `server-auth.json` file with a token. You can use the website https://jwt.io/ to generate a suitable password with a respective token. This way you can easily pass the password to someone with the encoding key for them to add to their requests in the header as `basicToken`. Also add the cors origin URL here.
+
+Example:
+
+```
+{
+  "cors-origin": "http://localhost:1234",
+  "api-password": "yourPassword!",
+  "api-token": "tokenGeneratedFromPasswordInJWT"
+}
+
+```
+
 <!-- TEMP -->
 
 ## Tuist Website

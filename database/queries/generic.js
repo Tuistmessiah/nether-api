@@ -97,6 +97,7 @@ function updateEntity(entityName, id, content) {
 }
 
 function deleteEntity(entityName, id) {
+  console.log({ entityName, id });
   return new Promise((resolve, reject) => {
     pool.query(
       `DELETE FROM ${entityName} WHERE "id" = $1`,

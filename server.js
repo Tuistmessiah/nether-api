@@ -4,8 +4,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+const auth = require("./server-auth.json");
+
 const tunoRouter = require("./api/tuno-router");
 const sectionRouter = require("./api/section-router");
+const soundRouter = require("./api/sound-router");
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,8 +20,10 @@ const INTERVAL_OF_BLACKLIST = 1000 * 60 * 60; // 1 hour
 
 // TODO: security, protect again stupidly big JSONs
 // TODO: improve status codes and messages of errors
+// TODO: Make security system with encrypted tokens
+// TODO: Make all security sensitive information coming from the server-auth.json
 
-app.use(cors({ origin: "http://localhost:3010", credentials: true }));
+app.use(cors({ origin: auth["cors-origin"], credentials: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -75,9 +80,21 @@ app.all("*", (req, res, next) => {
   next();
 });
 
+// Authentication
+app.all("*", (req, res, next) => {
+  if (req.get("basicToken") !== auth["api-token"]) {
+    res.status(505).json({
+      error: `No correct authentication: Include as header 'basicToken'`,
+    });
+    return;
+  }
+  next();
+});
+
 // Routing
 app.use("/tuno", tunoRouter);
 app.use("/section", sectionRouter);
+app.use("/sound", soundRouter);
 
 // Error Handler
 app.use((err, req, res, next) => {

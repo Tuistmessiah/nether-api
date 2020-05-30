@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:dev": "nodemon server.js",
     "db:reset": "cd database && ./reset_db.sh",
     "db:populate": "cd database/operations && node ./populate-db.js",
     "db:populate:custom": "cd database/operations && MOCK=custom node ./populate-db.js",
