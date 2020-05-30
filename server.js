@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+// Frontend certificate
 const auth = require("./server-auth.json");
 
 const tunoRouter = require("./api/tuno-router");
@@ -111,7 +112,8 @@ app.get("/", (req, res) => {
     content: {
       tuistWebsiteAPI: {
         description: "(WIP) API for my tuist-website project",
-        endpoint: "/tuno",
+        links: ["https://github.com/Tuistmessiah/tuist-website"],
+        endpoints: ["/tuno", "/section", "/sound"],
       },
     },
   });

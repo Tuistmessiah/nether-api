@@ -5,7 +5,7 @@ const router = new Router();
 const ENTITY_NAME = "sound";
 
 router.get("/", (req, res) => {
-  return res.json({ message: "Endpoints:", content: sectionEndpoints });
+  return res.json({ message: "Endpoints:", content: soundEndpoints });
 });
 
 router.get("/all", acrudEndpoints(ENTITY_NAME).all);

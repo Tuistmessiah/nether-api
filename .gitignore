@@ -23,8 +23,8 @@ yarn-error.log*
  
 .next
 
-/database/mockDataLocal
-/database/dbConfiguration.json
+/database/mock-data-local
+/database/db-configuration.json
 /server-auth.json
 
 # vscode

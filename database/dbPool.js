@@ -1,5 +1,5 @@
 const { Pool } = require("pg");
-const databaseConfiguration = require("./dbConfiguration.json");
+const databaseConfiguration = require("./db-configuration.json");
 
 if (!databaseConfiguration) {
   throw new Error(
