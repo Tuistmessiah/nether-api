@@ -83,7 +83,7 @@ app.all("*", (req, res, next) => {
 
 // Authentication
 app.all("*", (req, res, next) => {
-  if (req.get("basicToken") !== auth["api-token"]) {
+  if (!auth["auth-off"] && req.get("basicToken") !== auth["api-token"]) {
     res.status(505).json({
       error: `No correct authentication: Include as header 'basicToken'`,
     });
