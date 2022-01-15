@@ -24,7 +24,7 @@
     "find-config": "^1.0.0",
     "pg": "^8.1.0",
     "request": "^2.88.2",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
